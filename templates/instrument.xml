@@ -2,21 +2,21 @@
 <instrument version="2.0" name="{{ instrument.name }}">
  <samples>
    <sample name="{{ instrument.name }} " power="0.0017769">
-   <audiofile channel="AmbLeft" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="1"/>
-   <audiofile channel="AmbRight" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="2"/>
-   <audiofile channel="FTom1" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="3"/>
-   <audiofile channel="FTom2" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="4"/>
-   <audiofile channel="Hihat" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="5"/>
-   <audiofile channel="KDrumInside" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="6"/>
-   <audiofile channel="KDrumOutside" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="7"/>
-   <audiofile channel="OHCenter" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="8"/>
-   <audiofile channel="OHLeft" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="9"/>
-   <audiofile channel="OHRight" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="10"/>
-   <audiofile channel="Ride" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="11"/>
-   <audiofile channel="SnareBottom" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="12"/>
-   <audiofile channel="SnareTop" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="13"/>
-   <audiofile channel="Tom1" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="14"/>
-   <audiofile channel="Tom2" file="{{ instrument.name }}/{{ instrument.file }}" filechannel="15"/>
+   <audiofile channel="AmbLeft" file="{{ instrument.samplesfile }}" filechannel="1"/>
+   <audiofile channel="AmbRight" file="{{ instrument.samplesfile }}" filechannel="2"/>
+   <audiofile channel="FTom1" file="{{ instrument.samplesfile }}" filechannel="3"/>
+   <audiofile channel="FTom2" file="{{ instrument.samplesfile }}" filechannel="4"/>
+   <audiofile channel="Hihat" file="{{ instrument.samplesfile }}" filechannel="5"/>
+   <audiofile channel="KDrumInside" file="{{ instrument.samplesfile }}" filechannel="6"/>
+   <audiofile channel="KDrumOutside" file="{{ instrument.samplesfile }}" filechannel="7"/>
+   <audiofile channel="OHCenter" file="{{ instrument.samplesfile }}" filechannel="8"/>
+   <audiofile channel="OHLeft" file="{{ instrument.samplesfile }}" filechannel="9"/>
+   <audiofile channel="OHRight" file="{{ instrument.samplesfile }}" filechannel="10"/>
+   <audiofile channel="Ride" file="{{ instrument.samplesfile }}" filechannel="11"/>
+   <audiofile channel="SnareBottom" file="{{ instrument.samplesfile }}" filechannel="12"/>
+   <audiofile channel="SnareTop" file="{{ instrument.samplesfile }}" filechannel="13"/>
+   <audiofile channel="Tom1" file="{{ instrument.samplesfile }}" filechannel="14"/>
+   <audiofile channel="Tom2" file="{{ instrument.samplesfile }}" filechannel="15"/>
   </sample>
  </samples>
 </instrument>

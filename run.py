@@ -11,40 +11,54 @@ TEMPLATE_ENVIRONMENT = Environment(
 def run():
     dirlisting = os.listdir(os.getcwd())
     drumkitname = os.path.basename(os.getcwd())
+    noteindex = 36
     drumkit = {
             'name': drumkitname,
             'description': drumkitname + " drumgizmo drumkit",
             'samplerate': "48000",
             'instruments': [],
             }
+    midimap = {'instruments': [],}
     for file in dirlisting:
         if file.endswith(".wav"):
             name = file.split(".wav")[0]
+            samplesfile = "samples/" + file
+            samplesdir = name + "/samples/"
             print(name)
             context = {
                 'instrument': {
                     'name': name,
                     'file': file,
+                    'samplesfile': samplesfile,
+                    'noteidx': str(noteindex),
                     'xml': name+".xml",
                     }
                 }
             drumkit['instruments'].append(context)
             #print(context)
             os.mkdir(name)
+            os.mkdir(samplesdir)
             instrumentxml = render_template('instrument.xml', context)
             #print(instrumentxml)
-            print("save as: " + name + "/" + name + ".xml")
             write_xml_file(name + "/" +name + ".xml", instrumentxml)
-            os.rename(file, name + "/" + file)
+            os.rename(file, samplesdir + file)
+            noteindex = noteindex + 1
+            midimap['instruments'].append(context)
 
     context = {
             'drumkit': drumkit,
             }
     print(context)
+    ##
+    # Write drumkit XML file
+    ##
     drumkitxml = render_template('drumkit.xml', context)
     write_xml_file(drumkitname + ".xml", drumkitxml)
+    ##
+    # Write midimap XML file
+    ##
     midimapxml = render_template('midimap.xml', context)
-    write_xml_file("midimap.xml", drumkitxml)
+    write_xml_file("midimap.xml", midimapxml)
     print(midimapxml)
 
 def render_template(template_filename, context):
