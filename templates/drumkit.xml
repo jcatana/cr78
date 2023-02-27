@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drumkit name="{{ drumkit.name }}" description="{{ drumkit.description }}" samplerate="{{ drumkit.samplerate }}">
+  <channels>
+   <channel name="AmbLeft"/>
+   <channel name="AmbRight"/>
+   <channel name="OHLeft"/>
+   <channel name="OHRight"/>
+   <channel name="OHCenter"/>
+   <channel name="Hihat"/>
+   <channel name="Ride"/>
+   <channel name="SnareTop"/>
+   <channel name="SnareBottom"/>
+   <channel name="Tom1"/>
+   <channel name="Tom2"/>
+   <channel name="FTom1"/>
+   <channel name="FTom2"/>
+   <channel name="KDrumInside"/>
+   <channel name="KDrumOutside"/>
+  </channels>
+  <instruments>
+    {% for entry in drumkit.instruments -%}
+	  <instrument name="{{ entry.instrument.name }}" file="{{ entry.instrument.name }}/{{ entry.instrument.xml }}">
+      <channelmap in="AmbLeft" out="AmbLeft" main="true"/>
+      <channelmap in="AmbRight" out="AmbRight" main="true"/>
+      <channelmap in="OHLeft" out="OHLeft" main="true"/>
+      <channelmap in="OHRight" out="OHRight" main="true"/>
+      <channelmap in="OHCenter" out="OHCenter" main="true"/>
+      <channelmap in="Hihat" out="Hihat"/>
+      <channelmap in="Ride" out="Ride"/>
+      <channelmap in="SnareTop" out="SnareTop"/>
+      <channelmap in="SnareBottom" out="SnareBottom"/>
+      <channelmap in="Tom1" out="Tom1"/>
+      <channelmap in="Tom2" out="Tom2"/>
+      <channelmap in="FTom1" out="FTom1"/>
+      <channelmap in="FTom2" out="FTom2"/>
+      <channelmap in="KDrumInside" out="KDrumInside"/>
+      <channelmap in="KDrumOutside" out="KDrumOutside"/>
+    </instrument>
+    {% endfor -%}
+  </instruments>
+</drumkit>

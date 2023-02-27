@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<midimap>
+     {% for entry in drumkit.instruments -%}
+	<map note="{{ entry.instrument.noteidx }}" instr="{{ entry.instrument.name }}"/>
+     {% endfor -%}
+</midimap>
