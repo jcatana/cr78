@@ -15,10 +15,11 @@ def run(args):
         print("No .wav files found")
         exit()
 
-    if args.name:
+    if args.name is not None:
         drumkitname = args.name
     else:
-        drumkitname = os.path.basename(args.folder)
+        drumkitname = os.path.basename(os.path.abspath(args.folder))
+        print("drumkitname: " + drumkitname)
 
     noteindex = args.index
     drumkit = {
@@ -43,11 +44,19 @@ def run(args):
                     }
                 }
             drumkit['instruments'].append(context)
-            os.mkdir(name)
-            os.mkdir(samplesdir)
+
+            if args.verbose:
+                print("Creating " + os.path.join(args.folder,name))
+                print("Creating " + os.path.join(args.folder,samplesdir))
+            if not args.debug:
+                os.mkdir(os.path.join(args.folder,name))
+                os.mkdir(os.path.join(args.folder,samplesdir))
             instrumentxml = render_template('instrument.xml', context)
-            write_xml_file(name + "/" +name + ".xml", instrumentxml)
-            os.rename(file, samplesdir + file)
+            write_xml_file(name + "/" +name + ".xml", instrumentxml, args)
+            if args.verbose:
+                print("Moving " + os.path.join(args.folder,file) + " to " + os.path.join(args.folder,samplesdir, file))
+            if not args.debug:
+                os.rename(os.path.join(args.folder,file), os.path.join(args.folder,samplesdir, file))
             noteindex = noteindex + 1
             midimap['instruments'].append(context)
 
@@ -58,12 +67,12 @@ def run(args):
     # Write drumkit XML file
     ##
     drumkitxml = render_template('drumkit.xml', context)
-    write_xml_file(drumkitname + ".xml", drumkitxml)
+    write_xml_file(drumkitname + ".xml", drumkitxml, args)
     ##
     # Write midimap XML file
     ##
     midimapxml = render_template('midimap.xml', context)
-    write_xml_file("midimap.xml", midimapxml)
+    write_xml_file("midimap.xml", midimapxml, args)
     print(midimapxml)
     print("====\nYou may want to adjust your MIDI mappings\n====\n")
 
@@ -72,19 +81,23 @@ def render_template(template_filename, context):
 
 def write_xml_file(name, contents, args):
     if args.verbose:
+        print("Creating " + os.path.join(args.folder,name))
+    if args.verbose or args.debug:
         print(contents)
-    with open(name, "w") as fh:
-        fh.write(contents)
+    if not args.debug:
+        with open(os.path.join(args.folder,name), "w") as fh:
+            fh.write(contents)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Convert folder of .WAV samples into a drumgizmo drumkit")
     parser.add_argument("-v", "--verbose", action="store_true")
-    parser.add_argument("-r", "--rate", default="48000", help="Sample rate override. Defaults to 48000")
-    parser.add_argument("-i", "--index", default=36, help="Start index for midi note mapping. Defaults to 36")
-    parser.add_argument("-w", "--wave", default=os.getcwd(), help="Folder containing .wav files to be converted. Defaults to current directory")
-    parser.add_argument("-f", "--folder", default=os.getcwd(), help="Target folder to create template in. Top folder name will be used as name of kit if 'name' not defined")
-    parser.add_argument("-n", "--name",  help="Target folder to create template in. Will be used as name of kit")
+    parser.add_argument("-r", "--rate", help="Sample rate override. Defaults to 48000", default="48000")
+    parser.add_argument("-i", "--index", help="Start index for midi note mapping. Defaults to 36", default=36)
+    parser.add_argument("-w", "--wave", help="Folder containing .wav files to be converted. Defaults to current directory",default=os.getcwd())
+    parser.add_argument("-f", "--folder", help="Target folder to create template in. Top folder name will be used as name of kit if 'name' not defined", default=os.getcwd())
+    parser.add_argument("-n", "--name", help="Name of target kit")
+    parser.add_argument("-d", "--debug", help="Dry Run. Maybe", action="store_true")
     args = parser.parse_args()
 
     run(args)
