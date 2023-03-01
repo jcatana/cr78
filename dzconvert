@@ -10,8 +10,16 @@ TEMPLATE_ENVIRONMENT = Environment(
         trim_blocks=False)
 
 def run(args):
-    dirlisting = os.listdir(os.getcwd())
-    drumkitname = os.path.basename(os.getcwd())
+    dirlisting = os.listdir(args.wave)
+    if sum(file.endswith(".wav") for file in dirlisting) == 0:
+        print("No .wav files found")
+        exit()
+
+    if args.name:
+        drumkitname = args.name
+    else:
+        drumkitname = os.path.basename(args.folder)
+
     noteindex = args.index
     drumkit = {
             'name': drumkitname,
@@ -25,7 +33,6 @@ def run(args):
             name = file.split(".wav")[0]
             samplesfile = "samples/" + file
             samplesdir = name + "/samples/"
-            print(name)
             context = {
                 'instrument': {
                     'name': name,
@@ -36,11 +43,9 @@ def run(args):
                     }
                 }
             drumkit['instruments'].append(context)
-            #print(context)
             os.mkdir(name)
             os.mkdir(samplesdir)
             instrumentxml = render_template('instrument.xml', context)
-            #print(instrumentxml)
             write_xml_file(name + "/" +name + ".xml", instrumentxml)
             os.rename(file, samplesdir + file)
             noteindex = noteindex + 1
@@ -49,7 +54,6 @@ def run(args):
     context = {
             'drumkit': drumkit,
             }
-    print(context)
     ##
     # Write drumkit XML file
     ##
@@ -61,6 +65,7 @@ def run(args):
     midimapxml = render_template('midimap.xml', context)
     write_xml_file("midimap.xml", midimapxml)
     print(midimapxml)
+    print("====\nYou may want to adjust your MIDI mappings\n====\n")
 
 def render_template(template_filename, context):
     return TEMPLATE_ENVIRONMENT.get_template(template_filename).render(context)
@@ -77,6 +82,9 @@ def main():
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("-r", "--rate", default="48000", help="Sample rate override. Defaults to 48000")
     parser.add_argument("-i", "--index", default=36, help="Start index for midi note mapping. Defaults to 36")
+    parser.add_argument("-w", "--wave", default=os.getcwd(), help="Folder containing .wav files to be converted. Defaults to current directory")
+    parser.add_argument("-f", "--folder", default=os.getcwd(), help="Target folder to create template in. Top folder name will be used as name of kit if 'name' not defined")
+    parser.add_argument("-n", "--name",  help="Target folder to create template in. Will be used as name of kit")
     args = parser.parse_args()
 
     run(args)
